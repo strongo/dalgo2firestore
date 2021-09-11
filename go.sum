@@ -170,6 +170,8 @@ github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/strongo/db v0.0.0-20210910234955-78769a38d490 h1:tXQ++8NYALBwcb8xUqX2sEi/xvAwIT7Wd9j4AU+Oxdo=
 github.com/strongo/db v0.0.0-20210910234955-78769a38d490/go.mod h1:mJKgSC3FPsiRiWwqmVgc+Q7LoVxkmkBr8jXNJj4/wYE=
+github.com/strongo/db v0.0.0-20210911204848-3cd0c2b7ea0a h1:BLCnl7QPNcXTJUnbgHxq+A8P+O16IHig3fQTseNtB4w=
+github.com/strongo/db v0.0.0-20210911204848-3cd0c2b7ea0a/go.mod h1:mJKgSC3FPsiRiWwqmVgc+Q7LoVxkmkBr8jXNJj4/wYE=
 github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d h1:I8qa7ggQ5RT+hO5gTTaBtS8ZEvbsBIik//AdM4dZL4g=
 github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d/go.mod h1:b5FiRTvklOIQI/iX+4qfwtK7Jrs+9KTZFn1dP9iX26o=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
