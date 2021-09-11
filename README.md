@@ -1,2 +1,5 @@
-# db-firestore
-Firebase Firestore implementation for Strongo DB interface
+# strongo/dalgo-firestore
+
+Bridge to Firebase Firestore API for [`github.com/strongo/dalgo`](https://github.com/strongo/dalgo) interface.
+
+

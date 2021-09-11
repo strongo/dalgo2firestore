@@ -1,4 +1,4 @@
-package db_firestore
+package dalgo_firestore
 
 import "github.com/strongo/db"
 
