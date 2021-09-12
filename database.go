@@ -15,8 +15,13 @@ type database struct {
 
 var _ dalgo.Database = (*database)(nil)
 
-func NewDatabase() dalgo.Database {
-	var dtb database
+func NewDatabase(client *firestore.Client) dalgo.Database {
+	if client == nil {
+		panic("client is a required field, got nil")
+	}
+	dtb := database{
+		client: client,
+	}
 	dtb.inserter = newInserter(dtb)
 	dtb.deleter = newDeleter(dtb)
 	dtb.getter = newGetter(dtb)

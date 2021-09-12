@@ -15,6 +15,7 @@ require (
 	github.com/googleapis/gax-go/v2 v2.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d // indirect
+	github.com/strongo/validation v0.0.0-20210908182457-7acc8bdbeffd // indirect
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/net v0.0.0-20210503060351-7fd8e65b6420 // indirect
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f // indirect
