@@ -33,7 +33,8 @@ func (d deleter) Delete(ctx context.Context, key dalgo.RecordKey) error {
 func (d deleter) DeleteMulti(ctx context.Context, keys []dalgo.RecordKey) error {
 	batch := d.batch()
 	for _, key := range keys {
-		batch.Delete(d.doc(key))
+		docRef := d.doc(key)
+		batch.Delete(docRef)
 	}
 	_, err := batch.Commit(ctx)
 	return err
