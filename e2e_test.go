@@ -65,6 +65,7 @@ func TestEndToEnd(t *testing.T) {
 				if err = db.Get(ctx, record); err != nil {
 					if dalgo.IsNotFound(err) {
 						if err = db.Delete(ctx, record.Key()); err != nil {
+							log.Println("ERROR:", err)
 							t.Fatalf("failed to delete: %v", err)
 						}
 					} else {
@@ -109,6 +110,7 @@ func TestEndToEnd(t *testing.T) {
 					}),
 				}
 				if err := db.SetMulti(ctx, records); err != nil {
+					log.Println("ERROR:", err)
 					t.Fatalf("failed to set multiple records at once: %v", err)
 				}
 			})
@@ -118,6 +120,7 @@ func TestEndToEnd(t *testing.T) {
 					r3Key,
 				}
 				if err := db.DeleteMulti(ctx, keys); err != nil {
+					log.Println("ERROR:", err)
 					t.Fatalf("failed to delete multiple records at once: %v", err)
 				}
 			})
