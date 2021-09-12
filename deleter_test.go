@@ -3,18 +3,18 @@ package dalgo_firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/db"
+	"github.com/strongo/dalgo"
 	"testing"
 )
 
 func TestDeleter_Delete(t *testing.T) {
 	deleteCalled := 0
-	v := deleter{delete: func(ctx context.Context, key db.RecordKey) (*firestore.WriteResult, error) {
+	v := deleter{delete: func(ctx context.Context, key dalgo.RecordKey) (*firestore.WriteResult, error) {
 		deleteCalled++
 		return nil, nil
 	}}
 	ctx := context.Background()
-	key := db.NewRecordKey(db.RecordRef{Kind: "TestKind", ID: "test-id"})
+	key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: "TestKind", ID: "test-id"})
 	err := v.Delete(ctx, key)
 	if err != nil {
 		t.Errorf("expected to be successful, got error: %v", err)

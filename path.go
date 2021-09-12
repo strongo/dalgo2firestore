@@ -1,7 +1,7 @@
 package dalgo_firestore
 
-import "github.com/strongo/db"
+import "github.com/strongo/dalgo"
 
-func PathFromKey(key db.RecordKey) string {
-	return db.GetRecordKeyPath(key)
+func PathFromKey(key dalgo.RecordKey) string {
+	return dalgo.GetRecordKeyPath(key)
 }

@@ -3,24 +3,25 @@ package dalgo_firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/db"
+	"github.com/strongo/dalgo"
 )
 
 type inserter struct {
-	create func(ctx context.Context, record db.Record) (*firestore.WriteResult, error)
+	doc    func(key dalgo.RecordKey) *firestore.DocumentRef
+	create func(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error)
 }
 
-var _ db.Inserter = (*inserter)(nil)
+var _ dalgo.Inserter = (*inserter)(nil)
 
 func newInserter(dtb *database) inserter {
 	return inserter{
-		create: func(ctx context.Context, record db.Record) (*firestore.WriteResult, error) {
+		create: func(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error) {
 			return dtb.create(ctx, record)
 		},
 	}
 }
 
-func (i inserter) Insert(ctx context.Context, record db.Record, options db.InsertOptions) error {
+func (i inserter) Insert(ctx context.Context, record dalgo.Record, options dalgo.InsertOptions) error {
 	generateID := options.IDGenerator()
 	if generateID != nil {
 		if err := generateID(ctx, record); err != nil {
@@ -31,7 +32,7 @@ func (i inserter) Insert(ctx context.Context, record db.Record, options db.Inser
 	return err
 }
 
-func (dtb database) create(ctx context.Context, record db.Record) (*firestore.WriteResult, error) {
+func (dtb database) create(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error) {
 	key := record.Key()
 	path := PathFromKey(key)
 	docRef := dtb.client.Doc(path)
