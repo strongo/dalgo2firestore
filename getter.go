@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/strongo/dalgo"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type getter struct {
@@ -31,6 +33,9 @@ func (g getter) Get(ctx context.Context, record dalgo.Record) error {
 	docRef := g.doc(key)
 	docSnapshot, err := g.get(ctx, docRef)
 	if err != nil {
+		if status.Code(err) == codes.NotFound {
+			return dalgo.NewErrNotFoundByKey(record, err)
+		}
 		return err
 	}
 	recData := record.Data()

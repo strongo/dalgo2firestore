@@ -46,9 +46,25 @@ func TestEndToEnd(t *testing.T) {
 		t.Fatalf("failed to create Firestore client: %v", err)
 	}
 	db := NewDatabase(client)
+	key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r1"})
+	t.Run("get", func(t *testing.T) {
+		data := TestData{
+			StringProp:  "str1",
+			IntegerProp: 1,
+		}
+		record := dalgo.NewRecord(key, &data)
+		if err = db.Get(ctx, record); err != nil {
+			if dalgo.IsNotFound(err) {
+				if err = db.Delete(ctx, record.Key()); err != nil {
+					t.Fatalf("failed to delete: %v", err)
+				}
+			} else {
+				t.Errorf("unexpected error: %v", err)
+			}
+		}
+	})
 	t.Run("create", func(t *testing.T) {
 		t.Run("with_predefined_id", func(t *testing.T) {
-			key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r1"})
 			data := TestData{
 				StringProp:  "str1",
 				IntegerProp: 1,
@@ -59,5 +75,10 @@ func TestEndToEnd(t *testing.T) {
 				t.Errorf("got unexpected error: %v", err)
 			}
 		})
+	})
+	t.Run("delete", func(t *testing.T) {
+		if err := db.Delete(ctx, key); err != nil {
+			t.Errorf("Failed to delete: %v", err)
+		}
 	})
 }
