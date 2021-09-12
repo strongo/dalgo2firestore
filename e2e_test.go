@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -49,39 +50,79 @@ func TestEndToEnd(t *testing.T) {
 		t.Fatalf("failed to create Firestore client: %v", err)
 	}
 	db := NewDatabase(client)
-	key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r1"})
-	t.Run("get", func(t *testing.T) {
-		data := TestData{
-			StringProp:  "str1",
-			IntegerProp: 1,
-		}
-		record := dalgo.NewRecord(key, &data)
-		if err = db.Get(ctx, record); err != nil {
-			if dalgo.IsNotFound(err) {
-				if err = db.Delete(ctx, record.Key()); err != nil {
-					t.Fatalf("failed to delete: %v", err)
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	go func() {
+		t.Run("single", func(t *testing.T) {
+			key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r1"})
+			t.Run("get", func(t *testing.T) {
+				data := TestData{
+					StringProp:  "str1",
+					IntegerProp: 1,
 				}
-			} else {
-				t.Errorf("unexpected error: %v", err)
-			}
-		}
-	})
-	t.Run("create", func(t *testing.T) {
-		t.Run("with_predefined_id", func(t *testing.T) {
-			data := TestData{
-				StringProp:  "str1",
-				IntegerProp: 1,
-			}
-			record := dalgo.NewRecord(key, &data)
-			err := db.Insert(ctx, record, dalgo.NewInsertOptions())
-			if err != nil {
-				t.Errorf("got unexpected error: %v", err)
-			}
+				record := dalgo.NewRecord(key, &data)
+				if err = db.Get(ctx, record); err != nil {
+					if dalgo.IsNotFound(err) {
+						if err = db.Delete(ctx, record.Key()); err != nil {
+							t.Fatalf("failed to delete: %v", err)
+						}
+					} else {
+						t.Errorf("unexpected error: %v", err)
+					}
+				}
+			})
+			t.Run("create", func(t *testing.T) {
+				t.Run("with_predefined_id", func(t *testing.T) {
+					data := TestData{
+						StringProp:  "str1",
+						IntegerProp: 1,
+					}
+					record := dalgo.NewRecord(key, &data)
+					err := db.Insert(ctx, record, dalgo.NewInsertOptions())
+					if err != nil {
+						t.Errorf("got unexpected error: %v", err)
+					}
+				})
+			})
+			t.Run("delete", func(t *testing.T) {
+				if err := db.Delete(ctx, key); err != nil {
+					t.Errorf("Failed to delete: %v", err)
+				}
+			})
 		})
-	})
-	t.Run("delete", func(t *testing.T) {
-		if err := db.Delete(ctx, key); err != nil {
-			t.Errorf("Failed to delete: %v", err)
-		}
-	})
+		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
+		t.Run("multi", func(t *testing.T) {
+			r2Key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r2"})
+			r3Key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r3"})
+			t.Run("SetMulti", func(t *testing.T) {
+				records := []dalgo.Record{
+					dalgo.NewRecord(r2Key, TestData{
+						StringProp: "s2",
+					}),
+					dalgo.NewRecord(r3Key, TestData{
+						StringProp: "s3",
+					}),
+				}
+				if err := db.SetMulti(ctx, records); err != nil {
+					t.Fatalf("failed to set multiple records at once: %v", err)
+				}
+			})
+			t.Run("DeleteMulti", func(t *testing.T) {
+				keys := []dalgo.RecordKey{
+					r2Key,
+					r3Key,
+				}
+				if err := db.DeleteMulti(ctx, keys); err != nil {
+					t.Fatalf("failed to delete multiple records at once: %v", err)
+				}
+			})
+		})
+		wg.Done()
+	}()
+	wg.Wait()
 }
