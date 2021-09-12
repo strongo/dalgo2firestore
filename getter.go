@@ -46,5 +46,19 @@ func (g getter) Get(ctx context.Context, record dalgo.Record) error {
 }
 
 func (g getter) GetMulti(ctx context.Context, records []dalgo.Record) error {
+	docRefs := make([]*firestore.DocumentRef, len(records), len(records))
+	for i, rec := range records {
+		docRefs[i] = g.doc(rec.Key())
+	}
+	docSnapshots, err := g.getAll(ctx, docRefs)
+	if err != nil {
+		return err
+	}
+	for i, rec := range records {
+		data := rec.Data()
+		if err := docSnapshots[i].DataTo(data); err != nil {
+			return err
+		}
+	}
 	return nil
 }
