@@ -10,6 +10,7 @@ type database struct {
 	inserter
 	deleter
 	getter
+	setter
 	client *firestore.Client
 }
 
@@ -25,6 +26,7 @@ func NewDatabase(client *firestore.Client) dalgo.Database {
 	dtb.inserter = newInserter(dtb)
 	dtb.deleter = newDeleter(dtb)
 	dtb.getter = newGetter(dtb)
+	dtb.setter = newSetter(dtb)
 	return dtb
 }
 
