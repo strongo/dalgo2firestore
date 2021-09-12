@@ -8,16 +8,15 @@ import (
 
 type inserter struct {
 	doc    func(key dalgo.RecordKey) *firestore.DocumentRef
-	create func(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error)
+	create func(ctx context.Context, docRef *firestore.DocumentRef, data interface{}) (_ *firestore.WriteResult, err error)
 }
 
 var _ dalgo.Inserter = (*inserter)(nil)
 
-func newInserter(dtb *database) inserter {
+func newInserter(dtb database) inserter {
 	return inserter{
-		create: func(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error) {
-			return dtb.create(ctx, record)
-		},
+		doc:    dtb.doc,
+		create: create,
 	}
 }
 
@@ -28,14 +27,13 @@ func (i inserter) Insert(ctx context.Context, record dalgo.Record, options dalgo
 			return err
 		}
 	}
-	_, err := i.create(ctx, record)
+	_, err := i.insert(ctx, record)
 	return err
 }
 
-func (dtb database) create(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error) {
+func (i inserter) insert(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error) {
 	key := record.Key()
-	path := PathFromKey(key)
-	docRef := dtb.client.Doc(path)
+	docRef := i.doc(key)
 	data := record.Data()
-	return docRef.Create(ctx, data)
+	return i.create(ctx, docRef, data)
 }
