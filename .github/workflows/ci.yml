@@ -51,7 +51,7 @@ jobs:
 
       - name: Write GOOGLE_APPLICATION_CREDENTIALS to temp file
         run: |
-          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode --output ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json
+          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode >> ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json
           echo "$(cat ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json)"
 
       - name: Test
