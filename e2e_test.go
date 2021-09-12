@@ -40,14 +40,14 @@ func TestEndToEnd(t *testing.T) {
 	}
 	log.Println("Firestore Project ID:", firestoreProjectID)
 	//log.Println("ENV: GOOGLE_APPLICATION_CREDENTIALS:", os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
-	googleAppCredentials := strings.TrimSpace(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+	googleApiKey := strings.TrimSpace(os.Getenv("GOOGLE_API_KEY"))
 
 	ctx := context.Background()
 
 	var client *firestore.Client
 	var err error
-	if strings.HasPrefix(googleAppCredentials, "{") {
-		client, err = firestore.NewClient(ctx, firestoreProjectID, option.WithAPIKey(googleAppCredentials))
+	if strings.HasPrefix(googleApiKey, "{") {
+		client, err = firestore.NewClient(ctx, firestoreProjectID, option.WithAPIKey(googleApiKey))
 	} else {
 		client, err = firestore.NewClient(ctx, firestoreProjectID)
 	}
