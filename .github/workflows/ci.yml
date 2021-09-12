@@ -46,12 +46,14 @@ jobs:
       - name: go vet ./...
         run: go vet ./...
 
-      - name: Test
+      - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
           project_id: ${{ secrets.DALGO_E2E_PROJECT_ID }}
           service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           export_default_credentials: true
+
+      - name: Test
         env:
           DALGO_E2E_PROJECT_ID: ${{ secrets.DALGO_E2E_PROJECT_ID }}
         run: go test ./...
