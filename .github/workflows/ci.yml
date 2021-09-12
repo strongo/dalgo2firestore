@@ -47,9 +47,13 @@ jobs:
         run: go vet ./...
 
       - name: Test
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.DALGO_E2E_PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          export_default_credentials: true
         env:
           DALGO_E2E_PROJECT_ID: ${{ secrets.DALGO_E2E_PROJECT_ID }}
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         run: go test ./...
 
       - name: go build ./...

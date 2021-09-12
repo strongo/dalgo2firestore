@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/strongo/dalgo"
 	"github.com/strongo/validation"
-	"google.golang.org/api/option"
 	"log"
 	"os"
 	"strings"
@@ -40,17 +39,12 @@ func TestEndToEnd(t *testing.T) {
 	}
 	log.Println("Firestore Project ID:", firestoreProjectID)
 	//log.Println("ENV: GOOGLE_APPLICATION_CREDENTIALS:", os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
-	googleApiKey := strings.TrimSpace(os.Getenv("GOOGLE_API_KEY"))
 
 	ctx := context.Background()
 
 	var client *firestore.Client
 	var err error
-	if strings.HasPrefix(googleApiKey, "{") {
-		client, err = firestore.NewClient(ctx, firestoreProjectID, option.WithAPIKey(googleApiKey))
-	} else {
-		client, err = firestore.NewClient(ctx, firestoreProjectID)
-	}
+	client, err = firestore.NewClient(ctx, firestoreProjectID)
 	if err != nil {
 		t.Fatalf("failed to create Firestore client: %v", err)
 	}
