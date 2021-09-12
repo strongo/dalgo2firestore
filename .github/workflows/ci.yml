@@ -19,6 +19,7 @@ jobs:
           echo $credentials > ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json
           export GOOGLE_APPLICATION_CREDENTIALS="${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json"
           echo $GOOGLE_APPLICATION_CREDENTIALS
+          echo "$(cat ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json)"
 
       - name: Install Go
         uses: actions/setup-go@v2
