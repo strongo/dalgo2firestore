@@ -38,7 +38,7 @@ func TestEndToEnd(t *testing.T) {
 		//t.Fatalf("Environment variable DALGO_E2E_PROJECT_ID is not set")
 	}
 	log.Println("Firestore Project ID:", firestoreProjectID)
-	log.Println("ENV: GOOGLE_APPLICATION_CREDENTIALS:", os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+	//log.Println("ENV: GOOGLE_APPLICATION_CREDENTIALS:", os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, firestoreProjectID)
