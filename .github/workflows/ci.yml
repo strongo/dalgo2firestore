@@ -16,50 +16,50 @@ jobs:
         env:
           credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         run: |
-          printf "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+#          printf "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" >> ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json
           export GOOGLE_APPLICATION_CREDENTIALS="${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json"
-          echo $GOOGLE_APPLICATION_CREDENTIALS
-          echo "$(cat ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json)"
+#          echo $GOOGLE_APPLICATION_CREDENTIALS
+#          echo "$(cat ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json)"
 
-#      - name: Install Go
-#        uses: actions/setup-go@v2
-#        with:
-#          go-version: '^1.17.0' # The Go version to download (if necessary) and use.
-#
-#
-#      - uses: actions/cache@v2
-#        with:
-#          # In order:
-#          # * Module download cache
-#          # * Build cache (Linux)
-#          # * Build cache (Mac)
-#          # * Build cache (Windows)
-#          path: |
-#            ~/go/pkg/mod
-#            ~/.cache/go-build
-#            ~/Library/Caches/go-build
-#            %LocalAppData%\go-build
-#          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-#          restore-keys: |
-#            ${{ runner.os }}-go-
-#
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: go get ./...
-#        run: go get ./...
-#
-#      #      - name: Lint
-#      #        run: go run golang.org/x/lint/golint ./...
-#
-#      - name: go vet ./...
-#        run: go vet ./...
-#
-#      - name: go build ./...
-#        run: go build ./...
-#
-#      - name: Test
-#        env:
-#          DALGO_E2E_PROJECT_ID: ${{ secrets.DALGO_E2E_PROJECT_ID }}
-#        run: go test ./...
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.0' # The Go version to download (if necessary) and use.
+
+
+      - uses: actions/cache@v2
+        with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            %LocalAppData%\go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: go get ./...
+        run: go get ./...
+
+      #      - name: Lint
+      #        run: go run golang.org/x/lint/golint ./...
+
+      - name: go vet ./...
+        run: go vet ./...
+
+      - name: go build ./...
+        run: go build ./...
+
+      - name: Test
+        env:
+          DALGO_E2E_PROJECT_ID: ${{ secrets.DALGO_E2E_PROJECT_ID }}
+        run: go test ./...
