@@ -47,6 +47,9 @@ jobs:
         run: go vet ./...
 
       - name: Test
+        env:
+          DALGO_E2E_PROJECT_ID: ${{ secrets.DALGO_E2E_PROJECT_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         run: go test ./...
 
       - name: go build ./...
