@@ -4,6 +4,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"github.com/strongo/dalgo"
+	"log"
 )
 
 type inserter struct {
@@ -34,6 +35,9 @@ func (i inserter) Insert(ctx context.Context, record dalgo.Record, options dalgo
 func (i inserter) insert(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error) {
 	key := record.Key()
 	docRef := i.doc(key)
+	if docRef != nil {
+		log.Println("inserting document:", docRef.Path)
+	}
 	data := record.Data()
 	return i.create(ctx, docRef, data)
 }
