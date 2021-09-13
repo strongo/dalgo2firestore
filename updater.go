@@ -5,7 +5,12 @@ import (
 	"github.com/strongo/dalgo"
 )
 
-func (dtb database) Update(ctx context.Context, record dalgo.Record) error {
+func (dtb database) Update(
+	ctx context.Context,
+	key dalgo.RecordKey,
+	updates []dalgo.Update,
+	preconditions ...dalgo.Precondition,
+) error {
 	panic("implement me")
 }
 

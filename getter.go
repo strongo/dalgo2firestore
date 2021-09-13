@@ -34,7 +34,7 @@ func (g getter) Get(ctx context.Context, record dalgo.Record) error {
 	docSnapshot, err := g.get(ctx, docRef)
 	if err != nil {
 		if status.Code(err) == codes.NotFound {
-			return dalgo.NewErrNotFoundByKey(record, err)
+			return dalgo.NewErrNotFoundByKey(key, err)
 		}
 		return err
 	}
