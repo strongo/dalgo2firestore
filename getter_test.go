@@ -15,7 +15,7 @@ type getterMock struct {
 func newGetterMock() *getterMock {
 	var gm getterMock
 	gm.getter = getter{
-		doc: func(key dalgo.RecordKey) *firestore.DocumentRef {
+		doc: func(key *dalgo.Key) *firestore.DocumentRef {
 			return nil
 		},
 		get: func(ctx context.Context, docRef *firestore.DocumentRef) (_ *firestore.DocumentSnapshot, err error) {
@@ -32,7 +32,7 @@ func newGetterMock() *getterMock {
 func TestGetter_Get(t *testing.T) {
 	gm := newGetterMock()
 	ctx := context.Background()
-	key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: "TestKind", ID: "TestID"})
+	key := dalgo.NewKeyWithStrID("TestKind", "TestID")
 	record := dalgo.NewRecord(key, nil)
 	err := gm.getter.Get(ctx, record)
 	if err != nil {

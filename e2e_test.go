@@ -55,7 +55,7 @@ func TestEndToEnd(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		t.Run("single", func(t *testing.T) {
-			key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r1"})
+			key := dalgo.NewKeyWithStrID(E2ETestKind, "r1")
 			t.Run("get", func(t *testing.T) {
 				data := TestData{
 					StringProp:  "str1",
@@ -79,7 +79,7 @@ func TestEndToEnd(t *testing.T) {
 						IntegerProp: 1,
 					}
 					record := dalgo.NewRecord(key, &data)
-					err := db.Insert(ctx, record, dalgo.NewInsertOptions())
+					err := db.Insert(ctx, record)
 					if err != nil {
 						t.Errorf("got unexpected error: %v", err)
 					}
@@ -97,8 +97,8 @@ func TestEndToEnd(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		t.Run("multi", func(t *testing.T) {
-			r2Key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r2"})
-			r3Key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: E2ETestKind, ID: "r3"})
+			r2Key := dalgo.NewKeyWithStrID(E2ETestKind, "r2")
+			r3Key := dalgo.NewKeyWithStrID(E2ETestKind, "r3")
 			t.Run("SetMulti", func(t *testing.T) {
 				records := []dalgo.Record{
 					dalgo.NewRecord(r2Key, TestData{
@@ -113,7 +113,7 @@ func TestEndToEnd(t *testing.T) {
 				}
 			})
 			t.Run("DeleteMulti", func(t *testing.T) {
-				keys := []dalgo.RecordKey{
+				keys := []*dalgo.Key{
 					r2Key,
 					r3Key,
 				}

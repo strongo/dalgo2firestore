@@ -15,7 +15,7 @@ type inserterMock struct {
 func newInserterMock() *inserterMock {
 	im := inserterMock{}
 	im.inserter = inserter{
-		doc: func(key dalgo.RecordKey) *firestore.DocumentRef {
+		doc: func(key *dalgo.Key) *firestore.DocumentRef {
 			return nil
 		},
 		create: func(ctx context.Context, docRef *firestore.DocumentRef, data interface{}) (_ *firestore.WriteResult, err error) {
@@ -28,9 +28,9 @@ func newInserterMock() *inserterMock {
 func TestInserter_Insert(t *testing.T) {
 	inserterMock := newInserterMock()
 	ctx := context.Background()
-	key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: "TestKind", ID: "test-id"})
+	key := dalgo.NewKeyWithStrID("TestKind", "test-id")
 	record := dalgo.NewRecord(key, nil)
-	err := inserterMock.inserter.Insert(ctx, record, dalgo.NewInsertOptions())
+	err := inserterMock.inserter.Insert(ctx, record)
 	if err != nil {
 		t.Errorf("expected to be successful, got error: %v", err)
 	}

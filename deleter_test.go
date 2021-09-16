@@ -20,7 +20,7 @@ func (dm *deleterMock) delete(ctx context.Context, docRef *firestore.DocumentRef
 func newDeleterMock() *deleterMock {
 	var dm deleterMock
 	dm.deleter = deleter{
-		doc: func(key dalgo.RecordKey) *firestore.DocumentRef {
+		doc: func(key *dalgo.Key) *firestore.DocumentRef {
 			return nil
 		},
 		delete: dm.delete,
@@ -31,7 +31,7 @@ func newDeleterMock() *deleterMock {
 func TestDeleter_Delete(t *testing.T) {
 	deleterMock := newDeleterMock()
 	ctx := context.Background()
-	key := dalgo.NewRecordKey(dalgo.RecordRef{Kind: "TestKind", ID: "test-id"})
+	key := dalgo.NewKeyWithStrID("TestKind", "test-id")
 	err := deleterMock.deleter.Delete(ctx, key)
 	if err != nil {
 		t.Errorf("expected to be successful, got error: %v", err)

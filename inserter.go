@@ -8,7 +8,7 @@ import (
 )
 
 type inserter struct {
-	doc    func(key dalgo.RecordKey) *firestore.DocumentRef
+	doc    func(key *dalgo.Key) *firestore.DocumentRef
 	create func(ctx context.Context, docRef *firestore.DocumentRef, data interface{}) (_ *firestore.WriteResult, err error)
 }
 
@@ -21,7 +21,8 @@ func newInserter(dtb database) inserter {
 	}
 }
 
-func (i inserter) Insert(ctx context.Context, record dalgo.Record, options dalgo.InsertOptions) error {
+func (i inserter) Insert(ctx context.Context, record dalgo.Record, opts ...dalgo.InsertOption) error {
+	options := dalgo.NewInsertOptions(opts...)
 	generateID := options.IDGenerator()
 	if generateID != nil {
 		if err := generateID(ctx, record); err != nil {

@@ -7,7 +7,7 @@ import (
 
 func (dtb database) Update(
 	ctx context.Context,
-	key dalgo.RecordKey,
+	key *dalgo.Key,
 	updates []dalgo.Update,
 	preconditions ...dalgo.Precondition,
 ) error {

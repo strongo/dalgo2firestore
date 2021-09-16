@@ -7,7 +7,7 @@ import (
 )
 
 type setter struct {
-	doc   func(key dalgo.RecordKey) *firestore.DocumentRef
+	doc   func(key *dalgo.Key) *firestore.DocumentRef
 	set   func(ctx context.Context, docRef *firestore.DocumentRef, data interface{}) (_ *firestore.WriteResult, err error)
 	batch func() *firestore.WriteBatch
 }

@@ -11,7 +11,7 @@ import (
 )
 
 type getter struct {
-	doc    func(key dalgo.RecordKey) *firestore.DocumentRef
+	doc    func(key *dalgo.Key) *firestore.DocumentRef
 	dataTo func(ds *firestore.DocumentSnapshot, p interface{}) error
 	get    func(ctx context.Context, docRef *firestore.DocumentRef) (_ *firestore.DocumentSnapshot, err error)
 	getAll func(ctx context.Context, docRefs []*firestore.DocumentRef) (_ []*firestore.DocumentSnapshot, err error)
