@@ -5,15 +5,24 @@ import (
 	"github.com/strongo/dalgo"
 )
 
-func (dtb database) Update(
-	ctx context.Context,
-	key *dalgo.Key,
-	updates []dalgo.Update,
-	preconditions ...dalgo.Precondition,
-) error {
-	panic("implement me")
+type updater struct {
+	dtb *database
 }
 
-func (dtb database) UpdateMulti(c context.Context, records []dalgo.Record) error {
-	panic("implement me")
+func (u updater) Update(
+	_ context.Context,
+	_ *dalgo.Key,
+	_ []dalgo.Update,
+	_ ...dalgo.Precondition,
+) error {
+	panic("not supported")
+}
+
+func (u updater) UpdateMulti(
+	_ context.Context,
+	_ []*dalgo.Key,
+	_ []dalgo.Update,
+	_ ...dalgo.Precondition,
+) error {
+	panic("not supported")
 }

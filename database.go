@@ -11,6 +11,7 @@ type database struct {
 	deleter
 	getter
 	setter
+	updater
 	client *firestore.Client
 }
 

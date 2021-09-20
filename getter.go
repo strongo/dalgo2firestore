@@ -32,14 +32,23 @@ func (g getter) Get(ctx context.Context, record dalgo.Record) error {
 	key := record.Key()
 	docRef := g.doc(key)
 	docSnapshot, err := g.get(ctx, docRef)
+	return docSnapshotToRecord(err, docSnapshot, record, g.dataTo)
+}
+
+func docSnapshotToRecord(
+	err error,
+	docSnapshot *firestore.DocumentSnapshot,
+	record dalgo.Record,
+	dataTo func(ds *firestore.DocumentSnapshot, p interface{}) error,
+) error {
 	if err != nil {
 		if status.Code(err) == codes.NotFound {
-			return dalgo.NewErrNotFoundByKey(key, err)
+			return dalgo.NewErrNotFoundByKey(record.Key(), err)
 		}
 		return err
 	}
 	recData := record.Data()
-	if err = g.dataTo(docSnapshot, recData); err != nil {
+	if err = dataTo(docSnapshot, recData); err != nil {
 		return errors.Wrap(err, fmt.Sprintf("failed to marshal record data into a struct of type %T", recData))
 	}
 	return nil

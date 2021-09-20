@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	cloud.google.com/go/firestore v1.5.0
-	github.com/strongo/dalgo v0.0.0-20210920152411-d8c1a551e2cd
+	github.com/strongo/dalgo v0.0.0-20210920215807-e7e49b088559
 )
 
 require (

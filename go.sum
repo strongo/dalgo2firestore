@@ -184,6 +184,10 @@ github.com/strongo/dalgo v0.0.0-20210919070416-a740692c223f h1:CdptfD7H+ZwOhwBeQ
 github.com/strongo/dalgo v0.0.0-20210919070416-a740692c223f/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
 github.com/strongo/dalgo v0.0.0-20210920152411-d8c1a551e2cd h1:hMnqryW6yCQEMOVi2YbsAAk66h2S+2lmOSJtCdL2ufg=
 github.com/strongo/dalgo v0.0.0-20210920152411-d8c1a551e2cd/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
+github.com/strongo/dalgo v0.0.0-20210920214015-513326cc67a9 h1:qCiquxZ+xlbUUA0r/SkH+dSbDsAGhrdRS/+MBHSuFQY=
+github.com/strongo/dalgo v0.0.0-20210920214015-513326cc67a9/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
+github.com/strongo/dalgo v0.0.0-20210920215807-e7e49b088559 h1:xtV8kJV4BbtMls/OjQDQuhUl4F0gPfm2hZlk2B+denM=
+github.com/strongo/dalgo v0.0.0-20210920215807-e7e49b088559/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
 github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d h1:I8qa7ggQ5RT+hO5gTTaBtS8ZEvbsBIik//AdM4dZL4g=
 github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d/go.mod h1:b5FiRTvklOIQI/iX+4qfwtK7Jrs+9KTZFn1dP9iX26o=
 github.com/strongo/validation v0.0.0-20210908182457-7acc8bdbeffd h1:hvHVKVARPjItp1EQxTk0v3SxE8fICA3n0s2iVeejhOU=
