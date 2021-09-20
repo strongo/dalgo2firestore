@@ -27,15 +27,24 @@ type transaction struct {
 	tx  *firestore.Transaction
 }
 
-func (t transaction) Insert(c context.Context, record dalgo.Record, opts ...dalgo.InsertOption) error {
-	panic("implement me")
+func (t transaction) Insert(ctx context.Context, record dalgo.Record, opts ...dalgo.InsertOption) error {
+	options := dalgo.NewInsertOptions(opts...)
+	idGenerator := options.IDGenerator()
+	key := record.Key()
+	if key.ID == nil {
+		key.ID = idGenerator(ctx, record)
+	}
+	dr := t.dtb.doc(key)
+	data := record.Data()
+	return t.tx.Create(dr, data)
 }
 
-func (t transaction) Upsert(ctx context.Context, record dalgo.Record) error {
-	panic("implement me")
+func (t transaction) Upsert(_ context.Context, record dalgo.Record) error {
+	dr := t.dtb.doc(record.Key())
+	return t.tx.Set(dr, record.Data())
 }
 
-func (t transaction) Get(ctx context.Context, record dalgo.Record) error {
+func (t transaction) Get(_ context.Context, record dalgo.Record) error {
 	key := record.Key()
 	docRef := t.dtb.doc(key)
 	docSnapshot, err := t.tx.Get(docRef)
@@ -45,11 +54,12 @@ func (t transaction) Get(ctx context.Context, record dalgo.Record) error {
 }
 
 func (t transaction) Set(ctx context.Context, record dalgo.Record) error {
-	panic("implement me")
+	dr := t.dtb.doc(record.Key())
+	return t.tx.Set(dr, record.Data())
 }
 
 func (t transaction) Update(
-	ctx context.Context,
+	_ context.Context,
 	key *dalgo.Key,
 	updates []dalgo.Update,
 	preconditions ...dalgo.Precondition,
