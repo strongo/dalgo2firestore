@@ -29,11 +29,17 @@ func newGetterMock() *getterMock {
 	return &gm
 }
 
+type testKind struct {
+	Str string
+	Int int
+}
+
 func TestGetter_Get(t *testing.T) {
 	gm := newGetterMock()
 	ctx := context.Background()
 	key := dalgo.NewKeyWithStrID("TestKind", "TestID")
-	record := dalgo.NewRecord(key, nil)
+	data := new(testKind)
+	record := dalgo.NewRecord(key, data)
 	err := gm.getter.Get(ctx, record)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

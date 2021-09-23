@@ -29,7 +29,8 @@ func TestInserter_Insert(t *testing.T) {
 	inserterMock := newInserterMock()
 	ctx := context.Background()
 	key := dalgo.NewKeyWithStrID("TestKind", "test-id")
-	record := dalgo.NewRecord(key, nil)
+	data := new(testKind)
+	record := dalgo.NewRecord(key, data)
 	err := inserterMock.inserter.Insert(ctx, record)
 	if err != nil {
 		t.Errorf("expected to be successful, got error: %v", err)
