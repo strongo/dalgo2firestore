@@ -1,4 +1,4 @@
-package dalgo_firestore
+package dalgo2firestore
 
 import (
 	"context"
