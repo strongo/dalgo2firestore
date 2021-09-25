@@ -17,6 +17,7 @@ type database struct {
 
 var _ dalgo.Database = (*database)(nil)
 
+// NewDatabase creates new instance of dalgo interface to Firestore
 func NewDatabase(client *firestore.Client) dalgo.Database {
 	if client == nil {
 		panic("client is a required field, got nil")
