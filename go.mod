@@ -1,4 +1,4 @@
-module github.com/strongo/dalgo-firestore
+module github.com/strongo/dalgo2firestore
 
 go 1.17
 

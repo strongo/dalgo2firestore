@@ -172,12 +172,8 @@ github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81P
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/strongo/dalgo v0.0.0-20210920215807-e7e49b088559 h1:xtV8kJV4BbtMls/OjQDQuhUl4F0gPfm2hZlk2B+denM=
-github.com/strongo/dalgo v0.0.0-20210920215807-e7e49b088559/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
 github.com/strongo/dalgo v0.0.0-20210927223507-6da94ee5dbca h1:nTsCH34pmK043peN14LejmT5JQso6k/DzdTQTSgPSyE=
 github.com/strongo/dalgo v0.0.0-20210927223507-6da94ee5dbca/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
-github.com/strongo/dalgo-end2end-tests v0.0.0-20210925161600-75a4f620a3b4 h1:WvnVpKiGYeUoSN/RfhJ7HnGKagqXBwoMls0ieWVwOjw=
-github.com/strongo/dalgo-end2end-tests v0.0.0-20210925161600-75a4f620a3b4/go.mod h1:EVJhuW7B6Rx5b+celEzhnpJXxLI7Vt3biFATSQjGdE8=
 github.com/strongo/dalgo-end2end-tests v0.0.0-20210927224051-a71acbc3d042 h1:x2n5yFNycxWXFE40eiVr1XL4YpLtLCzfO/3VMZ5DLHc=
 github.com/strongo/dalgo-end2end-tests v0.0.0-20210927224051-a71acbc3d042/go.mod h1:sZD6XdcFM5HthM0yzwqcXpuBoPFPN8zmNmZkH3VlJxA=
 github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d h1:I8qa7ggQ5RT+hO5gTTaBtS8ZEvbsBIik//AdM4dZL4g=
@@ -535,7 +531,6 @@ google.golang.org/grpc v1.37.1/go.mod h1:NREThFqKR1f3iQ6oBuvc5LadQuXVGo9rkm5ZGrQ
 google.golang.org/grpc v1.38.0/go.mod h1:NREThFqKR1f3iQ6oBuvc5LadQuXVGo9rkm5ZGrQdJfM=
 google.golang.org/grpc v1.39.0/go.mod h1:PImNr+rS9TWYb2O4/emRugxiyHZ5JyHW5F+RPnDzfrE=
 google.golang.org/grpc v1.39.1/go.mod h1:PImNr+rS9TWYb2O4/emRugxiyHZ5JyHW5F+RPnDzfrE=
-google.golang.org/grpc v1.40.0 h1:AGJ0Ih4mHjSeibYkFGh1dD9KJ/eOtZ93I6hoHhukQ5Q=
 google.golang.org/grpc v1.40.0/go.mod h1:ogyxbiOoUXAkP+4+xa6PZSE9DZgIHtSpzjDTB9KAK34=
 google.golang.org/grpc v1.41.0 h1:f+PlOh7QV4iIJkPrx5NQ7qaNGFQ3OTse67yaDHfju4E=
 google.golang.org/grpc v1.41.0/go.mod h1:U3l9uK9J0sini8mHphKoXyaqDA/8VyGnDee1zzIUK6k=
