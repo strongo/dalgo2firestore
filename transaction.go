@@ -132,7 +132,7 @@ func (t transaction) UpdateMulti(
 			fsUpdates[i] = getFirestoreUpdate(u)
 		}
 		if err := t.tx.Update(dr, fsUpdates, fsPreconditions...); err != nil {
-			keyPath := dalgo.GetRecordKeyPath(key)
+			keyPath := PathFromKey(key)
 			return fmt.Errorf("failed to update record with key: %v: %w", keyPath, err)
 		}
 	}

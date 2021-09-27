@@ -33,7 +33,7 @@ func NewDatabase(client *firestore.Client) dalgo.Database {
 }
 
 func (dtb database) doc(key *dalgo.Key) *firestore.DocumentRef {
-	path := dalgo.GetRecordKeyPath(key)
+	path := PathFromKey(key)
 	return dtb.client.Doc(path)
 }
 
