@@ -58,7 +58,7 @@ func docSnapshotToRecord(
 }
 
 func (g getter) GetMulti(ctx context.Context, records []dalgo.Record) error {
-	docRefs := make([]*firestore.DocumentRef, len(records), len(records))
+	docRefs := make([]*firestore.DocumentRef, len(records))
 	for i, rec := range records {
 		docRefs[i] = g.doc(rec.Key())
 	}
