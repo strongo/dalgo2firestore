@@ -48,8 +48,10 @@ func docSnapshotToRecord(
 		return err
 	}
 	recData := record.Data()
-	if err = dataTo(docSnapshot, recData); err != nil {
-		return errors.Wrap(err, fmt.Sprintf("failed to marshal record data into a struct of type %T", recData))
+	err = dataTo(docSnapshot, recData)
+	record.SetError(err)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("failed to marshal record data into a target of type %T", recData))
 	}
 	return nil
 }
@@ -63,11 +65,14 @@ func (g getter) GetMulti(ctx context.Context, records []dalgo.Record) error {
 	if err != nil {
 		return err
 	}
+	allErrors := make([]error, 0, len(records))
 	for i, rec := range records {
-		data := rec.Data()
-		if err := docSnapshots[i].DataTo(data); err != nil {
-			return err
+		if err = docSnapshotToRecord(nil, docSnapshots[i], rec, g.dataTo); err != nil {
+			allErrors = append(allErrors, err)
 		}
+	}
+	if allErrors != nil {
+		return errors.Wrapf(allErrors[0], "failed to marshal data for %v records out of %v", len(allErrors), len(records))
 	}
 	return nil
 }
