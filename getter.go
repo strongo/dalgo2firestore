@@ -3,7 +3,6 @@ package dalgo2firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"fmt"
 	"github.com/pkg/errors"
 	"github.com/strongo/dalgo"
 	"google.golang.org/grpc/codes"
@@ -50,10 +49,15 @@ func docSnapshotToRecord(
 	}
 	recData := record.Data()
 	err = dataTo(docSnapshot, recData)
-	record.SetError(err)
-	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("failed to marshal record data into a target of type %T", recData))
+	if status.Code(err) == codes.NotFound {
+		err = dalgo.NewErrNotFoundByKey(record.Key(), err)
+		record.SetError(err)
+		return err
 	}
+	if err != nil {
+		err = errors.Wrapf(err, "failed to marshal record data into a target of type %T", recData)
+	}
+	record.SetError(err)
 	return nil
 }
 
