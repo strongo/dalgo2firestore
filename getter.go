@@ -43,8 +43,9 @@ func docSnapshotToRecord(
 ) error {
 	if err != nil {
 		if status.Code(err) == codes.NotFound {
-			return dalgo.NewErrNotFoundByKey(record.Key(), err)
+			err = dalgo.NewErrNotFoundByKey(record.Key(), err)
 		}
+		record.SetError(err)
 		return err
 	}
 	recData := record.Data()
@@ -67,7 +68,7 @@ func (g getter) GetMulti(ctx context.Context, records []dalgo.Record) error {
 	}
 	allErrors := make([]error, 0, len(records))
 	for i, rec := range records {
-		if err = docSnapshotToRecord(nil, docSnapshots[i], rec, g.dataTo); err != nil {
+		if err = docSnapshotToRecord(nil, docSnapshots[i], rec, g.dataTo); err != nil && !dalgo.IsNotFound(err) {
 			allErrors = append(allErrors, err)
 		}
 	}
