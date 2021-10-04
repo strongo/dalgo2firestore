@@ -176,6 +176,8 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/strongo/dalgo v0.0.0-20211003200945-8aa966acb238 h1:COgtpHkU3aWfOBmVB9FX6PKZby+F3zkopQ/lX8v+RYQ=
 github.com/strongo/dalgo v0.0.0-20211003200945-8aa966acb238/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
+github.com/strongo/dalgo v0.0.0-20211004192629-4d97e1d4c892 h1:pc5MnIFcAxv+JzZ3c4vls/ev8J25kMncKsINP6C/XwE=
+github.com/strongo/dalgo v0.0.0-20211004192629-4d97e1d4c892/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
 github.com/strongo/dalgo-end2end-tests v0.0.0-20211004171441-fa195bf840e4 h1:2xrFYUsDnRlBtrHnf0VKp/9s0ooDX0/7paoU4UzKT9w=
 github.com/strongo/dalgo-end2end-tests v0.0.0-20211004171441-fa195bf840e4/go.mod h1:BTGg3o+aAOoOIQz29klObaxg2sqNytfTi3mpHnUHcPc=
 github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d h1:I8qa7ggQ5RT+hO5gTTaBtS8ZEvbsBIik//AdM4dZL4g=
