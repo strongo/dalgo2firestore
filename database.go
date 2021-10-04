@@ -33,6 +33,7 @@ func NewDatabase(client *firestore.Client) dalgo.Database {
 	dtb.deleter = newDeleter(dtb)
 	dtb.getter = newGetter(dtb)
 	dtb.setter = newSetter(dtb)
+	dtb.updater = newUpdater(&dtb)
 	return dtb
 }
 

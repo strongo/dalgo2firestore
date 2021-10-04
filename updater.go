@@ -11,6 +11,12 @@ type updater struct {
 	dtb *database
 }
 
+func newUpdater(dtb *database) updater {
+	return updater{
+		dtb: dtb,
+	}
+}
+
 func (u updater) Update(
 	ctx context.Context,
 	key *dalgo.Key,
@@ -28,8 +34,8 @@ func (u updater) UpdateMulti(
 	updates []dalgo.Update,
 	preconditions ...dalgo.Precondition,
 ) error {
-	return u.dtb.RunInTransaction(ctx, func(ctx context.Context, d dalgo.Transaction) error {
-		return d.UpdateMulti(ctx, keys, updates, preconditions...)
+	return u.dtb.RunInTransaction(ctx, func(ctx context.Context, tx dalgo.Transaction) error {
+		return tx.UpdateMulti(ctx, keys, updates, preconditions...)
 	})
 }
 
