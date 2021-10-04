@@ -76,7 +76,7 @@ func (g getter) GetMulti(ctx context.Context, records []dalgo.Record) error {
 			allErrors = append(allErrors, err)
 		}
 	}
-	if allErrors != nil {
+	if len(allErrors) > 0 {
 		return errors.Wrapf(allErrors[0], "failed to marshal data for %v records out of %v", len(allErrors), len(records))
 	}
 	return nil
