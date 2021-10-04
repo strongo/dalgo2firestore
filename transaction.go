@@ -10,7 +10,7 @@ import (
 func (dtb database) RunInTransaction(ctx context.Context, f func(context.Context, dalgo.Transaction) error, options ...dalgo.TransactionOption) error {
 	firestoreTxOptions := createFirestoreTransactionOptions(options)
 	return dtb.client.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
-		return f(ctx, transaction{tx: tx})
+		return f(ctx, transaction{dtb: dtb, tx: tx})
 	}, firestoreTxOptions...)
 }
 
@@ -22,9 +22,15 @@ func createFirestoreTransactionOptions(opts []dalgo.TransactionOption) (options 
 	return
 }
 
+var _ dalgo.Transaction = (*transaction)(nil)
+
 type transaction struct {
 	dtb database
 	tx  *firestore.Transaction
+}
+
+func (t transaction) Select(ctx context.Context, query dalgo.Query) (dalgo.Reader, error) {
+	panic("implement me")
 }
 
 func (t transaction) Insert(ctx context.Context, record dalgo.Record, opts ...dalgo.InsertOption) error {

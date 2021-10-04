@@ -39,7 +39,7 @@ func TestGetter_Get(t *testing.T) {
 	ctx := context.Background()
 	key := dalgo.NewKeyWithStrID("TestKind", "TestID")
 	data := new(testKind)
-	record := dalgo.NewRecord(key, data)
+	record := dalgo.NewRecordWithData(key, data)
 	err := gm.getter.Get(ctx, record)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

@@ -174,8 +174,12 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/strongo/dalgo v0.0.0-20210927223507-6da94ee5dbca h1:nTsCH34pmK043peN14LejmT5JQso6k/DzdTQTSgPSyE=
 github.com/strongo/dalgo v0.0.0-20210927223507-6da94ee5dbca/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
+github.com/strongo/dalgo v0.0.0-20211003200945-8aa966acb238 h1:COgtpHkU3aWfOBmVB9FX6PKZby+F3zkopQ/lX8v+RYQ=
+github.com/strongo/dalgo v0.0.0-20211003200945-8aa966acb238/go.mod h1:2cen3Tk4Vjn+HTs42sZykv9RakPi4jOhbTRVqJ83yqQ=
 github.com/strongo/dalgo-end2end-tests v0.0.0-20210927224051-a71acbc3d042 h1:x2n5yFNycxWXFE40eiVr1XL4YpLtLCzfO/3VMZ5DLHc=
 github.com/strongo/dalgo-end2end-tests v0.0.0-20210927224051-a71acbc3d042/go.mod h1:sZD6XdcFM5HthM0yzwqcXpuBoPFPN8zmNmZkH3VlJxA=
+github.com/strongo/dalgo-end2end-tests v0.0.0-20211004171441-fa195bf840e4 h1:2xrFYUsDnRlBtrHnf0VKp/9s0ooDX0/7paoU4UzKT9w=
+github.com/strongo/dalgo-end2end-tests v0.0.0-20211004171441-fa195bf840e4/go.mod h1:BTGg3o+aAOoOIQz29klObaxg2sqNytfTi3mpHnUHcPc=
 github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d h1:I8qa7ggQ5RT+hO5gTTaBtS8ZEvbsBIik//AdM4dZL4g=
 github.com/strongo/random v0.0.0-20201120164511-f20cfe28165d/go.mod h1:b5FiRTvklOIQI/iX+4qfwtK7Jrs+9KTZFn1dP9iX26o=
 github.com/strongo/validation v0.0.0-20210908182457-7acc8bdbeffd h1:hvHVKVARPjItp1EQxTk0v3SxE8fICA3n0s2iVeejhOU=

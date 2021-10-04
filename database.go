@@ -15,6 +15,10 @@ type database struct {
 	client *firestore.Client
 }
 
+func (dtb database) Select(ctx context.Context, query dalgo.Query) (dalgo.Reader, error) {
+	panic("implement me")
+}
+
 var _ dalgo.Database = (*database)(nil)
 
 // NewDatabase creates new instance of dalgo interface to Firestore
