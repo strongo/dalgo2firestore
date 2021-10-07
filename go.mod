@@ -5,7 +5,7 @@ go 1.17
 require (
 	cloud.google.com/go/firestore v1.5.0
 	github.com/pkg/errors v0.9.1
-	github.com/strongo/dalgo v0.0.0-20211004192629-4d97e1d4c892
+	github.com/strongo/dalgo v0.0.0-20211007211258-27794e6c07bd
 	github.com/strongo/dalgo-end2end-tests v0.0.0-20211004171441-fa195bf840e4
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
 	google.golang.org/grpc v1.41.0
