@@ -4,37 +4,50 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"fmt"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 )
 
-func (dtb database) RunInTransaction(ctx context.Context, f func(context.Context, dalgo.Transaction) error, options ...dalgo.TransactionOption) error {
+func (dtb database) RunReadonlyTransaction(ctx context.Context, f dal.ROTxWorker, options ...dal.TransactionOption) error {
+	options = append(options, dal.TxWithReadonly())
 	firestoreTxOptions := createFirestoreTransactionOptions(options)
 	return dtb.client.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
 		return f(ctx, transaction{dtb: dtb, tx: tx})
 	}, firestoreTxOptions...)
 }
 
-func createFirestoreTransactionOptions(opts []dalgo.TransactionOption) (options []firestore.TransactionOption) {
-	to := dalgo.NewTransactionOptions(opts...)
+func (dtb database) RunReadwriteTransaction(ctx context.Context, f dal.RWTxWorker, options ...dal.TransactionOption) error {
+	firestoreTxOptions := createFirestoreTransactionOptions(options)
+	return dtb.client.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
+		return f(ctx, transaction{dtb: dtb, tx: tx})
+	}, firestoreTxOptions...)
+}
+
+func createFirestoreTransactionOptions(opts []dal.TransactionOption) (options []firestore.TransactionOption) {
+	to := dal.NewTransactionOptions(opts...)
 	if to.IsReadonly() {
 		options = append(options, firestore.ReadOnly)
 	}
 	return
 }
 
-var _ dalgo.Transaction = (*transaction)(nil)
+var _ dal.Transaction = (*transaction)(nil)
 
 type transaction struct {
-	dtb database
-	tx  *firestore.Transaction
+	tx      *firestore.Transaction
+	options dal.TransactionOptions
+	dtb     database
 }
 
-func (t transaction) Select(ctx context.Context, query dalgo.Query) (dalgo.Reader, error) {
+func (t transaction) Options() dal.TransactionOptions {
+	return t.options
+}
+
+func (t transaction) Select(ctx context.Context, query dal.Select) (dal.Reader, error) {
 	panic("implement me")
 }
 
-func (t transaction) Insert(ctx context.Context, record dalgo.Record, opts ...dalgo.InsertOption) error {
-	options := dalgo.NewInsertOptions(opts...)
+func (t transaction) Insert(ctx context.Context, record dal.Record, opts ...dal.InsertOption) error {
+	options := dal.NewInsertOptions(opts...)
 	idGenerator := options.IDGenerator()
 	key := record.Key()
 	if key.ID == nil {
@@ -45,12 +58,12 @@ func (t transaction) Insert(ctx context.Context, record dalgo.Record, opts ...da
 	return t.tx.Create(dr, data)
 }
 
-func (t transaction) Upsert(_ context.Context, record dalgo.Record) error {
+func (t transaction) Upsert(_ context.Context, record dal.Record) error {
 	dr := t.dtb.doc(record.Key())
 	return t.tx.Set(dr, record.Data())
 }
 
-func (t transaction) Get(_ context.Context, record dalgo.Record) error {
+func (t transaction) Get(_ context.Context, record dal.Record) error {
 	key := record.Key()
 	docRef := t.dtb.doc(key)
 	docSnapshot, err := t.tx.Get(docRef)
@@ -59,17 +72,17 @@ func (t transaction) Get(_ context.Context, record dalgo.Record) error {
 	})
 }
 
-func (t transaction) Set(ctx context.Context, record dalgo.Record) error {
+func (t transaction) Set(ctx context.Context, record dal.Record) error {
 	dr := t.dtb.doc(record.Key())
 	return t.tx.Set(dr, record.Data())
 }
 
-func (t transaction) Delete(ctx context.Context, key *dalgo.Key) error {
+func (t transaction) Delete(ctx context.Context, key *dal.Key) error {
 	dr := t.dtb.doc(key)
 	return t.tx.Delete(dr)
 }
 
-func (t transaction) GetMulti(ctx context.Context, records []dalgo.Record) error {
+func (t transaction) GetMulti(ctx context.Context, records []dal.Record) error {
 	dr := make([]*firestore.DocumentRef, len(records))
 	for i, r := range records {
 		dr[i] = t.dtb.doc(r.Key())
@@ -89,11 +102,11 @@ func (t transaction) GetMulti(ctx context.Context, records []dalgo.Record) error
 	return nil
 }
 
-func (t transaction) SetMulti(ctx context.Context, records []dalgo.Record) error {
+func (t transaction) SetMulti(ctx context.Context, records []dal.Record) error {
 	panic("implement me")
 }
 
-func (t transaction) DeleteMulti(_ context.Context, keys []*dalgo.Key) error {
+func (t transaction) DeleteMulti(_ context.Context, keys []*dal.Key) error {
 	for _, k := range keys {
 		dr := t.dtb.doc(k)
 		if err := t.tx.Delete(dr); err != nil {
@@ -103,4 +116,4 @@ func (t transaction) DeleteMulti(_ context.Context, keys []*dalgo.Key) error {
 	return nil
 }
 
-var _ dalgo.Transaction = (*transaction)(nil)
+var _ dal.Transaction = (*transaction)(nil)

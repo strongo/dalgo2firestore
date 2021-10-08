@@ -3,7 +3,7 @@ package dalgo2firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 )
 
 type database struct {
@@ -15,14 +15,14 @@ type database struct {
 	client *firestore.Client
 }
 
-func (dtb database) Select(ctx context.Context, query dalgo.Query) (dalgo.Reader, error) {
+func (dtb database) Select(ctx context.Context, query dal.Select) (dal.Reader, error) {
 	panic("implement me")
 }
 
-var _ dalgo.Database = (*database)(nil)
+var _ dal.Database = (*database)(nil)
 
 // NewDatabase creates new instance of dalgo interface to Firestore
-func NewDatabase(client *firestore.Client) dalgo.Database {
+func NewDatabase(client *firestore.Client) dal.Database {
 	if client == nil {
 		panic("client is a required field, got nil")
 	}
@@ -37,11 +37,11 @@ func NewDatabase(client *firestore.Client) dalgo.Database {
 	return dtb
 }
 
-func (dtb database) doc(key *dalgo.Key) *firestore.DocumentRef {
+func (dtb database) doc(key *dal.Key) *firestore.DocumentRef {
 	path := PathFromKey(key)
 	return dtb.client.Doc(path)
 }
 
-func (dtb database) Upsert(ctx context.Context, record dalgo.Record) error {
+func (dtb database) Upsert(ctx context.Context, record dal.Record) error {
 	panic("implement me")
 }

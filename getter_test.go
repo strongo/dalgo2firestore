@@ -3,7 +3,7 @@ package dalgo2firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 	"testing"
 )
 
@@ -15,7 +15,7 @@ type getterMock struct {
 func newGetterMock() *getterMock {
 	var gm getterMock
 	gm.getter = getter{
-		doc: func(key *dalgo.Key) *firestore.DocumentRef {
+		doc: func(key *dal.Key) *firestore.DocumentRef {
 			return nil
 		},
 		get: func(ctx context.Context, docRef *firestore.DocumentRef) (_ *firestore.DocumentSnapshot, err error) {
@@ -37,9 +37,9 @@ type testKind struct {
 func TestGetter_Get(t *testing.T) {
 	gm := newGetterMock()
 	ctx := context.Background()
-	key := dalgo.NewKeyWithStrID("TestKind", "TestID")
+	key := dal.NewKeyWithStrID("TestKind", "TestID")
 	data := new(testKind)
-	record := dalgo.NewRecordWithData(key, data)
+	record := dal.NewRecordWithData(key, data)
 	err := gm.getter.Get(ctx, record)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)

@@ -3,11 +3,11 @@ package dalgo2firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 )
 
 type setter struct {
-	doc   func(key *dalgo.Key) *firestore.DocumentRef
+	doc   func(key *dal.Key) *firestore.DocumentRef
 	set   func(ctx context.Context, docRef *firestore.DocumentRef, data interface{}) (_ *firestore.WriteResult, err error)
 	batch func() *firestore.WriteBatch
 }
@@ -22,7 +22,7 @@ func newSetter(dtb database) setter {
 	}
 }
 
-func (s setter) Set(ctx context.Context, record dalgo.Record) error {
+func (s setter) Set(ctx context.Context, record dal.Record) error {
 	key := record.Key()
 	docRef := s.doc(key)
 	data := record.Data()
@@ -30,7 +30,7 @@ func (s setter) Set(ctx context.Context, record dalgo.Record) error {
 	return err
 }
 
-func (s setter) SetMulti(ctx context.Context, records []dalgo.Record) error {
+func (s setter) SetMulti(ctx context.Context, records []dal.Record) error {
 	batch := s.batch()
 	for _, record := range records {
 		key := record.Key()

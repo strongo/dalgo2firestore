@@ -3,7 +3,7 @@ package dalgo2firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 	"testing"
 )
 
@@ -15,7 +15,7 @@ type inserterMock struct {
 func newInserterMock() *inserterMock {
 	im := inserterMock{}
 	im.inserter = inserter{
-		doc: func(key *dalgo.Key) *firestore.DocumentRef {
+		doc: func(key *dal.Key) *firestore.DocumentRef {
 			return nil
 		},
 		create: func(ctx context.Context, docRef *firestore.DocumentRef, data interface{}) (_ *firestore.WriteResult, err error) {
@@ -28,9 +28,9 @@ func newInserterMock() *inserterMock {
 func TestInserter_Insert(t *testing.T) {
 	inserterMock := newInserterMock()
 	ctx := context.Background()
-	key := dalgo.NewKeyWithStrID("TestKind", "test-id")
+	key := dal.NewKeyWithStrID("TestKind", "test-id")
 	data := new(testKind)
-	record := dalgo.NewRecordWithData(key, data)
+	record := dal.NewRecordWithData(key, data)
 	err := inserterMock.inserter.Insert(ctx, record)
 	if err != nil {
 		t.Errorf("expected to be successful, got error: %v", err)

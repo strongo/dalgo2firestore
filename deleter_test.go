@@ -3,7 +3,7 @@ package dalgo2firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 	"testing"
 )
 
@@ -20,7 +20,7 @@ func (dm *deleterMock) delete(ctx context.Context, docRef *firestore.DocumentRef
 func newDeleterMock() *deleterMock {
 	var dm deleterMock
 	dm.deleter = deleter{
-		doc: func(key *dalgo.Key) *firestore.DocumentRef {
+		doc: func(key *dal.Key) *firestore.DocumentRef {
 			return nil
 		},
 		delete: dm.delete,
@@ -31,7 +31,7 @@ func newDeleterMock() *deleterMock {
 func TestDeleter_Delete(t *testing.T) {
 	deleterMock := newDeleterMock()
 	ctx := context.Background()
-	key := dalgo.NewKeyWithStrID("TestKind", "test-id")
+	key := dal.NewKeyWithStrID("TestKind", "test-id")
 	err := deleterMock.deleter.Delete(ctx, key)
 	if err != nil {
 		t.Errorf("expected to be successful, got error: %v", err)

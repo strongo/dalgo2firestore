@@ -4,13 +4,13 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"github.com/pkg/errors"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type getter struct {
-	doc    func(key *dalgo.Key) *firestore.DocumentRef
+	doc    func(key *dal.Key) *firestore.DocumentRef
 	dataTo func(ds *firestore.DocumentSnapshot, p interface{}) error
 	get    func(ctx context.Context, docRef *firestore.DocumentRef) (_ *firestore.DocumentSnapshot, err error)
 	getAll func(ctx context.Context, docRefs []*firestore.DocumentRef) (_ []*firestore.DocumentSnapshot, err error)
@@ -27,7 +27,7 @@ func newGetter(dtb database) getter {
 	}
 }
 
-func (g getter) Get(ctx context.Context, record dalgo.Record) error {
+func (g getter) Get(ctx context.Context, record dal.Record) error {
 	key := record.Key()
 	docRef := g.doc(key)
 	docSnapshot, err := g.get(ctx, docRef)
@@ -37,12 +37,12 @@ func (g getter) Get(ctx context.Context, record dalgo.Record) error {
 func docSnapshotToRecord(
 	err error,
 	docSnapshot *firestore.DocumentSnapshot,
-	record dalgo.Record,
+	record dal.Record,
 	dataTo func(ds *firestore.DocumentSnapshot, p interface{}) error,
 ) error {
 	if err != nil {
 		if status.Code(err) == codes.NotFound {
-			err = dalgo.NewErrNotFoundByKey(record.Key(), err)
+			err = dal.NewErrNotFoundByKey(record.Key(), err)
 		}
 		record.SetError(err)
 		return err
@@ -50,7 +50,7 @@ func docSnapshotToRecord(
 	recData := record.Data()
 	err = dataTo(docSnapshot, recData)
 	if status.Code(err) == codes.NotFound {
-		err = dalgo.NewErrNotFoundByKey(record.Key(), err)
+		err = dal.NewErrNotFoundByKey(record.Key(), err)
 		record.SetError(err)
 		return err
 	}
@@ -61,7 +61,7 @@ func docSnapshotToRecord(
 	return nil
 }
 
-func (g getter) GetMulti(ctx context.Context, records []dalgo.Record) error {
+func (g getter) GetMulti(ctx context.Context, records []dal.Record) error {
 	docRefs := make([]*firestore.DocumentRef, len(records))
 	for i, rec := range records {
 		docRefs[i] = g.doc(rec.Key())
@@ -72,7 +72,7 @@ func (g getter) GetMulti(ctx context.Context, records []dalgo.Record) error {
 	}
 	allErrors := make([]error, 0, len(records))
 	for i, rec := range records {
-		if err = docSnapshotToRecord(nil, docSnapshots[i], rec, g.dataTo); err != nil && !dalgo.IsNotFound(err) {
+		if err = docSnapshotToRecord(nil, docSnapshots[i], rec, g.dataTo); err != nil && !dal.IsNotFound(err) {
 			allErrors = append(allErrors, err)
 		}
 	}

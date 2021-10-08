@@ -3,16 +3,14 @@ package dalgo2firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 	"log"
 )
 
 type inserter struct {
-	doc    func(key *dalgo.Key) *firestore.DocumentRef
+	doc    func(key *dal.Key) *firestore.DocumentRef
 	create func(ctx context.Context, docRef *firestore.DocumentRef, data interface{}) (_ *firestore.WriteResult, err error)
 }
-
-var _ dalgo.Inserter = (*inserter)(nil)
 
 func newInserter(dtb database) inserter {
 	return inserter{
@@ -21,8 +19,8 @@ func newInserter(dtb database) inserter {
 	}
 }
 
-func (i inserter) Insert(ctx context.Context, record dalgo.Record, opts ...dalgo.InsertOption) error {
-	options := dalgo.NewInsertOptions(opts...)
+func (i inserter) Insert(ctx context.Context, record dal.Record, opts ...dal.InsertOption) error {
+	options := dal.NewInsertOptions(opts...)
 	generateID := options.IDGenerator()
 	if generateID != nil {
 		if err := generateID(ctx, record); err != nil {
@@ -33,7 +31,7 @@ func (i inserter) Insert(ctx context.Context, record dalgo.Record, opts ...dalgo
 	return err
 }
 
-func (i inserter) insert(ctx context.Context, record dalgo.Record) (*firestore.WriteResult, error) {
+func (i inserter) insert(ctx context.Context, record dal.Record) (*firestore.WriteResult, error) {
 	key := record.Key()
 	docRef := i.doc(key)
 	if docRef != nil {

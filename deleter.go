@@ -3,16 +3,14 @@ package dalgo2firestore
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/strongo/dalgo"
+	"github.com/strongo/dalgo/dal"
 )
 
 type deleter struct {
-	doc    func(key *dalgo.Key) *firestore.DocumentRef
+	doc    func(key *dal.Key) *firestore.DocumentRef
 	delete func(ctx context.Context, docRef *firestore.DocumentRef) (_ *firestore.WriteResult, err error)
 	batch  func() *firestore.WriteBatch
 }
-
-var _ dalgo.Deleter = (*deleter)(nil)
 
 func newDeleter(dtb database) deleter {
 	return deleter{
@@ -24,13 +22,13 @@ func newDeleter(dtb database) deleter {
 	}
 }
 
-func (d deleter) Delete(ctx context.Context, key *dalgo.Key) error {
+func (d deleter) Delete(ctx context.Context, key *dal.Key) error {
 	docRef := d.doc(key)
 	_, err := d.delete(ctx, docRef)
 	return err
 }
 
-func (d deleter) DeleteMulti(ctx context.Context, keys []*dalgo.Key) error {
+func (d deleter) DeleteMulti(ctx context.Context, keys []*dal.Key) error {
 	batch := d.batch()
 	for _, key := range keys {
 		docRef := d.doc(key)
