@@ -8,7 +8,7 @@ require (
 	github.com/strongo/dalgo v0.0.2
 	github.com/strongo/dalgo-end2end-tests v0.0.2
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
-	google.golang.org/grpc v1.41.0
+	google.golang.org/grpc v1.42.0
 )
 
 require (
