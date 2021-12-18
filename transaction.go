@@ -103,7 +103,15 @@ func (t transaction) GetMulti(ctx context.Context, records []dal.Record) error {
 }
 
 func (t transaction) SetMulti(ctx context.Context, records []dal.Record) error {
-	panic("implement me")
+	for _, record := range records { // TODO: can we do this in parallel?
+		doc := t.dtb.doc(record.Key())
+		_, err := doc.Set(ctx, record.Data())
+		if err != nil {
+			record.SetError(err)
+			return err
+		}
+	}
+	return nil
 }
 
 func (t transaction) DeleteMulti(_ context.Context, keys []*dal.Key) error {

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"cloud.google.com/go/firestore"
 	"context"
-	end2end "github.com/strongo/dalgo-end2end-tests"
+	"github.com/strongo/dalgo/end2end"
 	"io"
 	"log"
 	"os"
@@ -17,15 +17,34 @@ import (
 
 func TestEndToEnd(t *testing.T) {
 	log.Println("TestEndToEnd() started...")
-	cmd, cmdOutput := startFirebaseEmulators(t)
+	cmd, cmdStdout, cmdStdErr := startFirebaseEmulators(t)
 	defer terminateFirebaseEmulators(cmd)
 	emulatorExited := false
+	go handleCommandStderr(t, cmdStdErr, &emulatorExited)
 	select {
 	case <-handleEmulatorClosing(t, cmd):
 		emulatorExited = true
 		t.Log("Firebase emulator exited")
-	case <-waitForEmulatorReadiness(t, cmdOutput, &emulatorExited):
+	case <-waitForEmulatorReadiness(t, cmdStdout, &emulatorExited):
 		testEndToEnd(t)
+	}
+}
+
+func handleCommandStderr(t *testing.T, stderr *bytes.Buffer, emulatorExited *bool) {
+	for {
+		if *emulatorExited {
+			return
+		}
+		line, err := stderr.ReadString('\n')
+		if err == io.EOF {
+			time.Sleep(9 * time.Millisecond)
+			continue
+		}
+		if err != nil {
+			t.Errorf("Failed to read from Firebase emulator STDERR: %v", err)
+			return
+		}
+		t.Errorf("ERROR in Firebase emulator: " + line)
 	}
 }
 
@@ -36,7 +55,7 @@ func terminateFirebaseEmulators(cmd *exec.Cmd) {
 	}
 }
 
-func startFirebaseEmulators(t *testing.T) (cmd *exec.Cmd, cmdOutput *bytes.Buffer) {
+func startFirebaseEmulators(t *testing.T) (cmd *exec.Cmd, stdout, stderr *bytes.Buffer) {
 	cmd = exec.Command("firebase",
 		"emulators:start",
 		"-c", "./firebase/firebase.json",
@@ -44,15 +63,16 @@ func startFirebaseEmulators(t *testing.T) (cmd *exec.Cmd, cmdOutput *bytes.Buffe
 		"--project", "dalgo",
 	)
 
-	buf := new(bytes.Buffer)
-	cmd.Stdout = buf
-	cmd.Stderr = buf
+	stdout = new(bytes.Buffer)
+	stderr = new(bytes.Buffer)
+	cmd.Stdout = stdout
+	cmd.Stderr = stderr
 
 	t.Log("Starting Firebase emulator...")
 	if err := cmd.Start(); err != nil {
 		t.Fatalf("Failed to start Firebase emulator: %v", err)
 	}
-	return cmd, buf
+	return
 }
 
 func waitForEmulatorReadiness(t *testing.T, cmdOutput *bytes.Buffer, emulatorExited *bool) (emulatorsReady chan bool) {
