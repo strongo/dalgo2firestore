@@ -54,7 +54,7 @@ jobs:
           echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode >> ${{ runner.temp }}/GOOGLE_APPLICATION_CREDENTIALS.json
 
       - name: Install Firebase tools
-        run: npm install firebase-tools
+        run: curl -sL firebase.tools | bash
 
       - name: Test
         env:
