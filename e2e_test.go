@@ -18,25 +18,27 @@ import (
 func TestEndToEnd(t *testing.T) {
 	log.Println("TestEndToEnd() started...")
 	cmd, cmdStdout, cmdStdErr := startFirebaseEmulators(t)
-	defer terminateFirebaseEmulators(cmd)
+	defer terminateFirebaseEmulators(t, cmd)
 	emulatorExited := false
 	go handleCommandStderr(t, cmdStdErr, &emulatorExited)
 	select {
 	case <-handleEmulatorClosing(t, cmd):
 		emulatorExited = true
-		t.Log("Firebase emulator exited")
 	case <-waitForEmulatorReadiness(t, cmdStdout, &emulatorExited):
 		testEndToEnd(t)
 	}
+	time.Sleep(10 * time.Millisecond)
 }
 
 func handleCommandStderr(t *testing.T, stderr *bytes.Buffer, emulatorExited *bool) {
+	reading := false
 	for {
 		if *emulatorExited {
 			return
 		}
 		line, err := stderr.ReadString('\n')
 		if err == io.EOF {
+			reading = false
 			time.Sleep(9 * time.Millisecond)
 			continue
 		}
@@ -44,15 +46,22 @@ func handleCommandStderr(t *testing.T, stderr *bytes.Buffer, emulatorExited *boo
 			t.Errorf("Failed to read from Firebase emulator STDERR: %v", err)
 			return
 		}
-		t.Errorf("ERROR in Firebase emulator: " + line)
+		if !reading {
+			reading = true
+			t.Error("ERROR in Firebase emulator:")
+		}
+		t.Error("\t" + strings.TrimSpace(line))
 	}
 }
 
-func terminateFirebaseEmulators(cmd *exec.Cmd) {
+func terminateFirebaseEmulators(t *testing.T, cmd *exec.Cmd) {
 	if err := cmd.Process.Signal(syscall.SIGTERM); err != nil {
-		log.Printf("Failed to terminate Firebase emulator: %v", err)
-		return
+		if err != os.ErrProcessDone {
+			t.Error("Failed to terminate Firebase emulator:", err)
+			return
+		}
 	}
+	t.Log("Firebase simulator terminated")
 }
 
 func startFirebaseEmulators(t *testing.T) (cmd *exec.Cmd, stdout, stderr *bytes.Buffer) {
@@ -106,12 +115,11 @@ func waitForEmulatorReadiness(t *testing.T, cmdOutput *bytes.Buffer, emulatorExi
 func handleEmulatorClosing(t *testing.T, cmd *exec.Cmd) (emulatorErrors chan error) {
 	emulatorErrors = make(chan error)
 	go func() {
-		err := cmd.Wait()
-		if err != nil {
+		if err := cmd.Wait(); err != nil {
 			if err.Error() == "signal: killed" {
 				t.Log("Firebase emulator killed.")
 			} else {
-				t.Errorf("Firebase emulator failed: %v", err)
+				t.Error("Firebase emulator failed:", err)
 				emulatorErrors <- err
 			}
 		} else {
