@@ -46,6 +46,9 @@ func handleCommandStderr(t *testing.T, stderr *bytes.Buffer, emulatorExited *boo
 			t.Errorf("Failed to read from Firebase emulator STDERR: %v", err)
 			return
 		}
+		if line = strings.TrimSpace(line); line == "" {
+			continue
+		}
 		if !reading {
 			reading = true
 			t.Error("ERROR in Firebase emulator:")
