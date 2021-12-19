@@ -53,7 +53,7 @@ func handleCommandStderr(t *testing.T, stderr *bytes.Buffer, emulatorExited *boo
 			reading = true
 			t.Error("ERROR in Firebase emulator:")
 		}
-		t.Error("\t" + strings.TrimSpace(line))
+		t.Error("\t" + line)
 	}
 }
 
