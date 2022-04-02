@@ -76,10 +76,20 @@ func (t transaction) UpdateMulti(
 }
 
 func getFirestoreUpdate(update dal.Update) firestore.Update {
+	value := update.Value
+	if transform, ok := dal.IsTransform(value); ok {
+		name := transform.Name()
+		switch name {
+		case "increment":
+			value = firestore.Increment(value)
+		default:
+			panic("unsupported transform operation: " + name)
+		}
+	}
 	return firestore.Update{
 		Path:      update.Field,
 		FieldPath: (firestore.FieldPath)(update.FieldPath),
-		Value:     update.Value,
+		Value:     value,
 	}
 }
 

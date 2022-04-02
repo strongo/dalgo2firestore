@@ -6,21 +6,6 @@ import (
 	"github.com/strongo/dalgo/dal"
 )
 
-type database struct {
-	inserter
-	deleter
-	getter
-	setter
-	updater
-	client *firestore.Client
-}
-
-func (dtb database) Select(ctx context.Context, query dal.Select) (dal.Reader, error) {
-	panic("implement me")
-}
-
-var _ dal.Database = (*database)(nil)
-
 // NewDatabase creates new instance of dalgo interface to Firestore
 func NewDatabase(client *firestore.Client) dal.Database {
 	if client == nil {
@@ -36,6 +21,23 @@ func NewDatabase(client *firestore.Client) dal.Database {
 	dtb.updater = newUpdater(&dtb)
 	return dtb
 }
+
+// database implements dal.Database
+type database struct {
+	inserter
+	deleter
+	getter
+	setter
+	updater
+	client *firestore.Client
+}
+
+// Select implement respetive method from dal.ReadonlySession
+func (dtb database) Select(ctx context.Context, query dal.Select) (dal.Reader, error) {
+	panic("implement me")
+}
+
+var _ dal.Database = (*database)(nil)
 
 func (dtb database) doc(key *dal.Key) *firestore.DocumentRef {
 	path := PathFromKey(key)
