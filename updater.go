@@ -81,7 +81,7 @@ func getFirestoreUpdate(update dal.Update) firestore.Update {
 		name := transform.Name()
 		switch name {
 		case "increment":
-			value = firestore.Increment(value)
+			value = firestore.Increment(transform.Value())
 		default:
 			panic("unsupported transform operation: " + name)
 		}
