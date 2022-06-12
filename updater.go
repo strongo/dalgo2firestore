@@ -77,7 +77,9 @@ func (t transaction) UpdateMulti(
 
 func getFirestoreUpdate(update dal.Update) firestore.Update {
 	value := update.Value
-	if transform, ok := dal.IsTransform(value); ok {
+	if value == dal.DeleteField {
+		value = firestore.Delete
+	} else if transform, ok := dal.IsTransform(value); ok {
 		name := transform.Name()
 		switch name {
 		case "increment":
